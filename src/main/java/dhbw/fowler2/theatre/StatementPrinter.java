@@ -19,14 +19,11 @@ public class StatementPrinter {
 
         for (var perf : invoice.performances) {
 
-            // add volume credits
-            volumeCredits += Math.max(perf.audience - 30, 0);
-            // add extra credit for every ten comedy attendees
-            if ("comedy" == playReturner(perf).type) volumeCredits += Math.floor(perf.audience / 5);
+            volumeCredits += volumeCreditsFor(perf);
 
             // print line for this order
-            result += String.format("  %s: %s (%s seats)\n", playReturner(perf).name, frmt.format(amountReturner(perf) / 100), perf.audience);
-            totalAmount += amountReturner(perf);
+            result += String.format("  %s: %s (%s seats)\n", playReturner(perf).name, frmt.format(amountFor(perf) / 100), perf.audience);
+            totalAmount += amountFor(perf);
         }
         result += String.format("Amount owed is %s\n", frmt.format(totalAmount / 100));
         result += String.format("You earned %s credits\n", volumeCredits);
@@ -38,9 +35,18 @@ public class StatementPrinter {
         return play;
     }
 
-    private double amountReturner(Performance perf) {
+    private double amountFor(Performance perf) {
         double amount = playReturner(perf).amountFor(perf, playReturner(perf));
         return amount;
+    }
+
+    private int volumeCreditsFor(Performance perf) {
+        int volumeCredits = 0;
+        volumeCredits +=  Math.max(perf.audience -30, 0);
+        if("comedy" == playReturner(perf).type) {
+            volumeCredits += Math.floor(perf.audience / 5);
+        }
+        return volumeCredits;
     }
 
 }
