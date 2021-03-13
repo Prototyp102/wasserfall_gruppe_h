@@ -31,4 +31,5 @@ public class StatementPrinterTest {
                 "Amount owed is $1,730.00\n" +
                 "You earned 47 credits\n", result);
     }
+
 }
