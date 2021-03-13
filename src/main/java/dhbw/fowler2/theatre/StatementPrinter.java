@@ -16,19 +16,19 @@ public class StatementPrinter {
     }
 
     public Play playReturner(Performance perf) {
-        Play play = plays.get(perf.playID);
+        Play play = plays.get(perf.play);
         return play;
     }
 
     public double amountFor(Performance perf) {
-        double amount = playReturner(perf).amountFor(perf, playReturner(perf));
+        double amount = perf.play.getResult(perf);
         return amount;
     }
 
     public int volumeCreditsFor(Performance perf) {
         int volumeCredits = 0;
         volumeCredits +=  Math.max(perf.audience -30, 0);
-        if("comedy" == playReturner(perf).type) {
+        if(perf.play instanceof ComedyPlay) {
             volumeCredits += Math.floor(perf.audience / 5);
         }
         return volumeCredits;
